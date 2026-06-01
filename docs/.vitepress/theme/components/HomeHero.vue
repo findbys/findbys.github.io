@@ -22,8 +22,6 @@
     </div>
 
     <div class="hero-copy">
-      <p class="eyebrow">findbys / frontend engineer</p>
-      <h1>把复杂业务做成稳定、清楚、好维护的产品界面。</h1>
       <p class="hero-desc">
         关注 Vue、跨端、工程化和 AI 辅助开发。这里记录项目实践、技术复盘，以及我对前端体验细节的长期打磨。
       </p>
@@ -357,6 +355,10 @@ onBeforeUnmount(() => {
   position: relative;
   z-index: 2;
   min-width: 0;
+  /* 居上显示 */
+  height: 100%;
+  padding-top: 42px;
+
 }
 
 .eyebrow {
