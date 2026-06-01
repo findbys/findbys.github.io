@@ -220,10 +220,13 @@ function initScene(canvas: HTMLCanvasElement) {
   moduleGroup.add(ring)
 
   const modules = [
-    ['Vue', '#7ac7a8', new THREE.Vector3(-1.46, 0.82, -0.1)],
-    ['Flutter', '#77aee6', new THREE.Vector3(1.48, 0.78, 0.05)],
-    ['Node', '#9fcb76', new THREE.Vector3(-1.34, -0.98, 0.12)],
-    ['AI Tools', '#d7a45f', new THREE.Vector3(1.32, -0.98, -0.04)],
+    ['Vue', '#7ac7a8', new THREE.Vector3(-1.74, 1.02, -0.12)],
+    ['React', '#74c7ec', new THREE.Vector3(0, 1.42, 0.08)],
+    ['Flutter', '#77aee6', new THREE.Vector3(1.74, 1.02, -0.06)],
+    ['Node', '#9fcb76', new THREE.Vector3(-1.76, -0.38, 0.12)],
+    ['Python', '#e2b85c', new THREE.Vector3(1.76, -0.38, 0.1)],
+    ['Java', '#d9876b', new THREE.Vector3(-0.92, -1.52, -0.04)],
+    ['AI Agent', '#d7a45f', new THREE.Vector3(0.92, -1.52, -0.04)],
   ] as const
 
   modules.forEach(([label, color, position]) => {
@@ -232,8 +235,8 @@ function initScene(canvas: HTMLCanvasElement) {
     lineGroup!.add(createConnection(new THREE.Vector3(0, 0, 0), position, color))
   })
 
-  const grid = new THREE.GridHelper(4.6, 12, '#26313b', '#1b232b')
-  grid.position.y = -1.56
+  const grid = new THREE.GridHelper(5.2, 14, '#26313b', '#1b232b')
+  grid.position.y = -1.88
   grid.rotation.x = 0.08
   scene.add(grid)
 
