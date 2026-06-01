@@ -1,12 +1,12 @@
 import { defineConfig } from 'vitepress'
 
-const isGitHubPages = process.env.GITHUB_PAGES === 'true'
+const base = process.env.VITEPRESS_BASE ?? '/'
 
 export default defineConfig({
   title: 'findbys',
   description: '全栈工程师 | 前端技术博客 - 分享 Vue3、Flutter、工程化等技术干货',
   lang: 'zh-CN',
-  base: isGitHubPages ? '/blog/' : '/',
+  base,
   appearance: {
     initialValue: 'light',
   },

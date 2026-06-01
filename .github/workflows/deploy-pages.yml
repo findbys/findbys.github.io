@@ -40,6 +40,7 @@ jobs:
         run: npm run docs:build
         env:
           GITHUB_PAGES: 'true'
+          VITEPRESS_BASE: '/'
 
       - name: Disable Jekyll
         run: touch docs/.vitepress/dist/.nojekyll
