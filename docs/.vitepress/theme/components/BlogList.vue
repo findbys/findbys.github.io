@@ -68,15 +68,15 @@ defineProps<{ posts: Post[] }>()
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(0,212,255,0.03), transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--c-brand-primary) 5%, transparent), transparent);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
 
 .blog-card:hover {
-  border-color: rgba(0, 212, 255, 0.25);
+  border-color: var(--c-border-glow);
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0,212,255,0.1);
+  box-shadow: var(--shadow-card);
 }
 
 .blog-card:hover::before { opacity: 1; }
@@ -131,8 +131,8 @@ defineProps<{ posts: Post[] }>()
 }
 
 .tag {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: color-mix(in srgb, var(--c-text-primary) 5%, transparent);
+  border: 1px solid var(--c-border-subtle);
   color: var(--c-text-muted);
   padding: 2px 8px;
   border-radius: 4px;

@@ -382,11 +382,13 @@ const legend = [
 
 <style scoped>
 .skill-section {
-  padding: 4rem 0 3rem;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
 }
 
 .section-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 2.5rem;
 }
 
@@ -396,21 +398,14 @@ const legend = [
   font-weight: 700;
   letter-spacing: 0.2em;
   color: var(--c-brand-primary);
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  padding: 4px 14px;
-  border-radius: 99px;
   margin-bottom: 0.75rem;
   font-family: var(--font-mono);
 }
 
 .section-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00d4ff, #7b2fff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(1.75rem, 3vw, 2.55rem);
+  font-weight: 760;
+  color: var(--c-text-primary);
   margin: 0 0 0.5rem;
   border: none !important;
   padding: 0 !important;
@@ -429,7 +424,7 @@ const legend = [
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 2.5rem;
 }
 
@@ -438,7 +433,7 @@ const legend = [
   align-items: center;
   gap: 6px;
   padding: 7px 18px;
-  border-radius: 99px;
+  border-radius: 8px;
   border: 1px solid var(--c-border-subtle);
   background: transparent;
   color: var(--c-text-muted);
@@ -450,16 +445,16 @@ const legend = [
 }
 
 .tab-btn:hover {
-  border-color: rgba(0, 212, 255, 0.3);
+  border-color: rgba(244, 195, 111, 0.36);
   color: var(--c-brand-primary);
-  background: rgba(0, 212, 255, 0.06);
+  background: rgba(244, 195, 111, 0.06);
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,255,0.15));
+  background: rgba(244, 195, 111, 0.11);
   border-color: var(--c-brand-primary);
   color: var(--c-brand-primary);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+  box-shadow: none;
 }
 
 /* Grid */

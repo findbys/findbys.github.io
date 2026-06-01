@@ -1,15 +1,21 @@
 import { defineConfig } from 'vitepress'
 
+const isGitHubPages = process.env.GITHUB_PAGES === 'true'
+
 export default defineConfig({
   title: 'findbys',
   description: '全栈工程师 | 前端技术博客 - 分享 Vue3、Flutter、工程化等技术干货',
   lang: 'zh-CN',
+  base: isGitHubPages ? '/blog/' : '/',
+  appearance: {
+    initialValue: 'light',
+  },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     ['link', { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap', rel: 'stylesheet' }],
-    ['meta', { name: 'theme-color', content: '#00d4ff' }],
+    ['meta', { name: 'theme-color', content: '#f8f7f2' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: '肖青林 - 全栈工程师技术博客' }],
     ['meta', { property: 'og:description', content: '分享前端、Flutter、工程化等技术干货' }],

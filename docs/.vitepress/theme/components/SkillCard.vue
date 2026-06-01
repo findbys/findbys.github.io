@@ -110,7 +110,7 @@ const hover = ref(false)
 }
 
 .skill-card:hover .card-face {
-  border-color: rgba(0, 212, 255, 0.25);
+  border-color: var(--c-border-glow);
 }
 
 .card-back {
@@ -145,7 +145,7 @@ const hover = ref(false)
 }
 .ring-bg {
   fill: none;
-  stroke: rgba(255,255,255,0.06);
+  stroke: var(--c-border-subtle);
   stroke-width: 2.5;
 }
 .ring-fill {
@@ -192,8 +192,8 @@ const hover = ref(false)
   justify-content: center;
 }
 .tag {
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  background: color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-brand-primary) 16%, transparent);
   color: var(--c-brand-primary);
   padding: 2px 8px;
   border-radius: 4px;

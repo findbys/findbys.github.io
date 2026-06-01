@@ -8,38 +8,42 @@
 /* ===== CSS Variables ===== */
 :root {
   /* Brand Colors */
-  --c-brand-primary: #00d4ff;
-  --c-brand-secondary: #7b2fff;
-  --c-brand-accent: #00ff88;
-  --c-brand-warm: #ff6b35;
+  --c-brand-primary: #b87522;
+  --c-brand-secondary: #287f78;
+  --c-brand-accent: #5e8f35;
+  --c-brand-warm: #b9673f;
+  --c-primary-button-text: #ffffff;
 
   /* Background */
-  --c-bg-deep: #060b18;
-  --c-bg-base: #0a0f1e;
-  --c-bg-elevated: #0f1629;
-  --c-bg-card: rgba(15, 22, 41, 0.8);
-  --c-bg-glass: rgba(0, 212, 255, 0.05);
+  --c-bg-deep: #eef0ea;
+  --c-bg-base: #f8f7f2;
+  --c-bg-elevated: #ffffff;
+  --c-bg-card: rgba(255, 255, 255, 0.88);
+  --c-bg-glass: rgba(184, 117, 34, 0.06);
+  --c-hero-stage-bg: #f1f0ea;
+  --c-footer-bg: #f0eee7;
+  --c-nav-bg: rgba(248, 247, 242, 0.88);
 
   /* Text */
-  --c-text-primary: #e8f4fd;
-  --c-text-secondary: #8ba3c1;
-  --c-text-muted: #4a6280;
+  --c-text-primary: #192026;
+  --c-text-secondary: #4f5b59;
+  --c-text-muted: #7a8581;
 
   /* Border */
-  --c-border-subtle: rgba(0, 212, 255, 0.12);
-  --c-border-glow: rgba(0, 212, 255, 0.4);
+  --c-border-subtle: rgba(25, 32, 38, 0.11);
+  --c-border-glow: rgba(184, 117, 34, 0.28);
 
   /* Gradients */
-  --g-brand: linear-gradient(135deg, #00d4ff 0%, #7b2fff 100%);
-  --g-accent: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
-  --g-dark: linear-gradient(180deg, #060b18 0%, #0a0f1e 100%);
-  --g-card: linear-gradient(145deg, rgba(15,22,41,0.9) 0%, rgba(10,15,30,0.95) 100%);
+  --g-brand: linear-gradient(135deg, #b87522 0%, #287f78 100%);
+  --g-accent: linear-gradient(135deg, #5e8f35 0%, #287f78 100%);
+  --g-dark: linear-gradient(180deg, #eef0ea 0%, #f8f7f2 100%);
+  --g-card: linear-gradient(145deg, rgba(255,255,255,0.96) 0%, rgba(239,239,232,0.94) 100%);
 
   /* Shadows */
-  --shadow-glow-blue: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
-  --shadow-glow-purple: 0 0 20px rgba(123, 47, 255, 0.3), 0 0 40px rgba(123, 47, 255, 0.1);
-  --shadow-glow-green: 0 0 20px rgba(0, 255, 136, 0.3);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --shadow-glow-blue: 0 0 20px rgba(40, 127, 120, 0.16), 0 0 40px rgba(40, 127, 120, 0.06);
+  --shadow-glow-purple: 0 0 20px rgba(184, 117, 34, 0.14), 0 0 40px rgba(184, 117, 34, 0.06);
+  --shadow-glow-green: 0 0 20px rgba(94, 143, 53, 0.16);
+  --shadow-card: 0 12px 36px rgba(25, 32, 38, 0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -84,8 +88,8 @@
   --vp-font-family-mono: var(--font-mono);
 
   --vp-c-brand-1: var(--c-brand-primary);
-  --vp-c-brand-2: #0bb8e0;
-  --vp-c-brand-3: #0090b5;
+  --vp-c-brand-2: #9b681e;
+  --vp-c-brand-3: #7d5318;
 
   --vp-c-bg: var(--c-bg-base);
   --vp-c-bg-soft: var(--c-bg-elevated);
@@ -97,16 +101,58 @@
 
   --vp-c-divider: var(--c-border-subtle);
 
-  --vp-nav-bg-color: rgba(6, 11, 24, 0.85);
+  --vp-nav-bg-color: var(--c-nav-bg);
   --vp-nav-screen-bg-color: var(--c-bg-deep);
 
-  --vp-code-bg: rgba(0, 212, 255, 0.06);
+  --vp-code-bg: rgba(184, 117, 34, 0.08);
   --vp-code-color: var(--c-brand-accent);
-  --vp-code-block-bg: #070d1f;
+  --vp-code-block-bg: #f0eee7;
 
+  --vp-c-default-1: #78847f;
+  --vp-c-default-2: #a6afab;
+  --vp-c-default-3: #dce0dc;
+
+  --vp-sidebar-bg-color: var(--c-bg-deep);
+}
+
+.dark {
+  --c-brand-primary: #f4c36f;
+  --c-brand-secondary: #86c5c0;
+  --c-brand-accent: #9fcb76;
+  --c-brand-warm: #d78b62;
+  --c-primary-button-text: #1a1308;
+
+  --c-bg-deep: #090d10;
+  --c-bg-base: #0d131a;
+  --c-bg-elevated: #121a22;
+  --c-bg-card: rgba(18, 26, 34, 0.82);
+  --c-bg-glass: rgba(244, 195, 111, 0.05);
+  --c-hero-stage-bg: #0d131a;
+  --c-footer-bg: #0d131a;
+  --c-nav-bg: rgba(9, 13, 16, 0.86);
+
+  --c-text-primary: #f2f0e8;
+  --c-text-secondary: #b4beb9;
+  --c-text-muted: #78847f;
+
+  --c-border-subtle: rgba(232, 244, 253, 0.1);
+  --c-border-glow: rgba(244, 195, 111, 0.36);
+
+  --g-brand: linear-gradient(135deg, #f4c36f 0%, #86c5c0 100%);
+  --g-accent: linear-gradient(135deg, #9fcb76 0%, #86c5c0 100%);
+  --g-dark: linear-gradient(180deg, #090d10 0%, #0d131a 100%);
+  --g-card: linear-gradient(145deg, rgba(18,26,34,0.92) 0%, rgba(10,14,18,0.96) 100%);
+
+  --shadow-glow-blue: 0 0 20px rgba(134, 197, 192, 0.22), 0 0 40px rgba(134, 197, 192, 0.08);
+  --shadow-glow-purple: 0 0 20px rgba(244, 195, 111, 0.22), 0 0 40px rgba(244, 195, 111, 0.08);
+  --shadow-glow-green: 0 0 20px rgba(159, 203, 118, 0.24);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255,255,255,0.05) inset;
+
+  --vp-c-brand-2: #d9a85a;
+  --vp-c-brand-3: #b98742;
+  --vp-code-bg: rgba(244, 195, 111, 0.08);
+  --vp-code-block-bg: #070d1f;
   --vp-c-default-1: #3a4a6a;
   --vp-c-default-2: #2a3550;
   --vp-c-default-3: #1a2540;
-
-  --vp-sidebar-bg-color: var(--c-bg-deep);
 }

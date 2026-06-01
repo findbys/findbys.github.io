@@ -10,7 +10,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+  scrollbar-color: var(--c-border-glow) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -38,7 +38,7 @@ body {
 
 /* ===== Selection ===== */
 ::selection {
-  background: rgba(0, 212, 255, 0.25);
+  background: color-mix(in srgb, var(--c-brand-primary) 26%, transparent);
   color: #fff;
 }
 
@@ -46,7 +46,7 @@ body {
 .VPNav {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  background: rgba(6, 11, 24, 0.85) !important;
+  background: var(--c-nav-bg) !important;
   border-bottom: 1px solid var(--c-border-subtle) !important;
 }
 
@@ -155,21 +155,21 @@ body {
 .vp-doc a {
   color: var(--c-brand-primary);
   text-decoration: none;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-brand-primary) 34%, transparent);
   transition: all var(--transition-base);
 }
 
 .vp-doc a:hover {
-  color: #fff;
+  color: var(--c-text-primary);
   border-bottom-color: var(--c-brand-primary);
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--c-brand-primary) 34%, transparent);
 }
 
 /* ===== Code ===== */
 .vp-doc :not(pre) > code {
-  background: rgba(0, 212, 255, 0.08);
+  background: color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
   color: var(--c-brand-accent);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  border: 1px solid color-mix(in srgb, var(--c-brand-primary) 16%, transparent);
   border-radius: 4px;
   padding: 0.1em 0.4em;
   font-size: 0.875em;
@@ -184,7 +184,7 @@ body {
 }
 
 .vp-doc div[class*='language-']::before {
-  background: rgba(0, 212, 255, 0.08);
+  background: color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
   border-bottom: 1px solid var(--c-border-subtle);
   color: var(--c-text-muted);
   font-family: var(--font-mono);
@@ -215,8 +215,8 @@ body {
 }
 
 .vp-doc .custom-block.info {
-  background: rgba(0, 212, 255, 0.05);
-  border-color: rgba(0, 212, 255, 0.2);
+  background: color-mix(in srgb, var(--c-brand-secondary) 7%, transparent);
+  border-color: color-mix(in srgb, var(--c-brand-secondary) 24%, transparent);
 }
 
 /* ===== Tables ===== */
@@ -229,7 +229,7 @@ body {
 }
 
 .vp-doc thead tr {
-  background: rgba(0, 212, 255, 0.08);
+  background: color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
 }
 
 .vp-doc th {
@@ -243,7 +243,7 @@ body {
 .vp-doc td {
   padding: 0.65rem 1rem;
   color: var(--c-text-secondary);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
 }
 
 .vp-doc tr:last-child td {
@@ -251,7 +251,7 @@ body {
 }
 
 .vp-doc tr:hover td {
-  background: rgba(0, 212, 255, 0.03);
+  background: color-mix(in srgb, var(--c-brand-primary) 5%, transparent);
 }
 
 /* ===== Utility Classes ===== */
@@ -278,8 +278,8 @@ body {
 }
 
 .glow-border {
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.1), inset 0 0 15px rgba(0, 212, 255, 0.02);
+  border: 1px solid var(--c-border-glow);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--c-brand-primary) 12%, transparent), inset 0 0 15px color-mix(in srgb, var(--c-brand-primary) 3%, transparent);
 }
 
 /* ===== Animations ===== */
@@ -294,8 +294,8 @@ body {
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.2); }
+  0%, 100% { box-shadow: 0 0 15px color-mix(in srgb, var(--c-brand-primary) 20%, transparent); }
+  50% { box-shadow: 0 0 30px color-mix(in srgb, var(--c-brand-primary) 42%, transparent), 0 0 60px color-mix(in srgb, var(--c-brand-primary) 18%, transparent); }
 }
 
 @keyframes borderFlow {
