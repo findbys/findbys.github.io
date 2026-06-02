@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: 'Flutter 中协程原理：把 async/await 讲简单',
+    excerpt: '用咖啡店取餐牌和事件循环两个比喻，把 Future、async/await、微任务队列和 Isolate 的关系讲清楚。',
+    link: '/blog/flutter/coroutine-principle',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', 'Dart', 'async/await'],
+    date: '2026-06-02',
+    readTime: '18 min',
+  },
+  {
     title: 'Vue3 Composition API 深度实践指南',
     excerpt: '从原理到实战，全面掌握 Vue3 组合式 API，包含自定义 Hooks 封装、响应式原理解析等核心内容。',
     link: '/blog/vue3/composition-api',
