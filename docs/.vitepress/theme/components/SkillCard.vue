@@ -25,10 +25,12 @@
       <!-- Back -->
       <div class="card-face card-back">
         <h3 class="back-title" :style="{ color: skill.color }">{{ skill.name }}</h3>
-        <div class="back-points">
-          <div v-for="(pt, i) in skill.points" :key="i" class="point-item">
-            <span class="point-dot" :style="{ background: skill.color }" />
-            <span>{{ pt }}</span>
+        <div class="back-scroll">
+          <div class="back-points">
+            <div v-for="(pt, i) in skill.points" :key="i" class="point-item">
+              <span class="point-dot" :style="{ background: skill.color }" />
+              <span>{{ pt }}</span>
+            </div>
           </div>
         </div>
         <div class="back-meta">
@@ -76,7 +78,7 @@ const hover = ref(false)
   perspective: 1000px;
   cursor: pointer;
   position: relative;
-  height: 280px;
+  height: 320px;
 }
 
 .card-inner {
@@ -116,7 +118,8 @@ const hover = ref(false)
 .card-back {
   transform: rotateY(180deg);
   align-items: flex-start;
-  padding: 1.5rem;
+  padding: 1.35rem 1.35rem 1.1rem;
+  gap: 0;
 }
 
 /* Icon */
@@ -182,6 +185,8 @@ const hover = ref(false)
   line-height: 1.5;
   margin: 0;
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 /* Tags */
@@ -190,6 +195,8 @@ const hover = ref(false)
   flex-wrap: wrap;
   gap: 4px;
   justify-content: center;
+  min-height: 44px;
+  align-content: center;
 }
 .tag {
   background: color-mix(in srgb, var(--c-brand-primary) 8%, transparent);
@@ -211,14 +218,37 @@ const hover = ref(false)
 .back-title {
   font-size: 1.1rem;
   font-weight: 700;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.8rem;
+  flex-shrink: 0;
+}
+.back-scroll {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  margin-right: -0.35rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--c-brand-primary) 46%, transparent) transparent;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 18px), transparent 100%);
+}
+.back-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.back-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.back-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--c-brand-primary) 46%, transparent);
+  border-radius: 999px;
 }
 .back-points {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  flex: 1;
   width: 100%;
+  padding-bottom: 1rem;
 }
 .point-item {
   display: flex;
@@ -240,7 +270,9 @@ const hover = ref(false)
   gap: 1.25rem;
   width: 100%;
   padding-top: 0.75rem;
+  margin-top: 0.75rem;
   border-top: 1px solid var(--c-border-subtle);
+  flex-shrink: 0;
 }
 .meta-label {
   display: block;
@@ -263,5 +295,19 @@ const hover = ref(false)
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: -1;
+}
+
+@media (max-width: 640px) {
+  .skill-card {
+    height: 340px;
+  }
+
+  .card-back {
+    padding: 1.15rem;
+  }
+
+  .point-item {
+    font-size: 0.76rem;
+  }
 }
 </style>

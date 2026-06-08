@@ -21,6 +21,12 @@
       <div class="underline-glow" aria-hidden="true"></div>
     </div>
 
+    <div class="creative-space-mark" aria-label="清林的创意空间">
+      <span class="mark-orbit" aria-hidden="true"></span>
+      <span class="mark-text" data-text="清林的创意空间">清林的创意空间</span>
+      <span class="mark-spark" aria-hidden="true"></span>
+    </div>
+
     <div class="hero-copy">
       <p class="hero-desc">
         关注 Vue、跨端、工程化和 AI 辅助开发。这里记录项目实践、技术复盘，以及我对前端体验细节的长期打磨。
@@ -334,6 +340,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-areas:
     "statement statement"
+    "mark mark"
     "copy stage";
   grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
   gap: clamp(1.75rem, 4vw, 3.2rem) clamp(2rem, 6vw, 5rem);
@@ -362,6 +369,119 @@ onBeforeUnmount(() => {
   height: 100%;
   padding-top: 42px;
 
+}
+
+.creative-space-mark {
+  grid-area: mark;
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: -0.7rem;
+  padding: 0.72rem 1.05rem 0.78rem;
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--c-brand-primary) 10%, transparent), transparent 78%),
+    radial-gradient(circle at 18% 40%, color-mix(in srgb, var(--c-brand-primary) 18%, transparent), transparent 42%);
+  box-shadow:
+    0 18px 48px color-mix(in srgb, var(--c-brand-primary) 10%, transparent);
+  overflow: hidden;
+  isolation: isolate;
+  animation: markFloat 4.8s ease-in-out infinite;
+}
+
+.creative-space-mark::before {
+  content: '';
+  position: absolute;
+  inset: -1px -12%;
+  background: linear-gradient(105deg, transparent 0 34%, color-mix(in srgb, #fff 48%, var(--c-brand-primary)) 47%, transparent 62% 100%);
+  transform: translateX(-120%) skewX(-16deg);
+  opacity: 0.72;
+  animation: markSweep 5.2s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  z-index: -1;
+}
+
+.creative-space-mark::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16%;
+  bottom: 16%;
+  width: 3px;
+  background: linear-gradient(180deg, var(--c-brand-primary), var(--c-brand-secondary));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--c-brand-primary) 52%, transparent);
+  animation: markBarPulse 3.2s ease-in-out infinite;
+}
+
+.mark-orbit {
+  position: absolute;
+  left: 0.72rem;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-top: 1px solid color-mix(in srgb, var(--c-brand-secondary) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--c-brand-primary) 34%, transparent);
+  mask-image: linear-gradient(90deg, #000 0 72%, transparent 100%);
+  animation: markLineBreath 3.8s ease-in-out infinite;
+}
+
+.mark-text {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  background:
+    linear-gradient(90deg, var(--c-text-primary), var(--c-brand-primary), var(--c-brand-secondary), var(--c-text-primary));
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(1.06rem, 1.65vw, 1.55rem);
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-shadow: 0 12px 26px color-mix(in srgb, var(--c-brand-primary) 22%, transparent);
+  animation: markTextGlow 4.8s ease-in-out infinite;
+}
+
+.mark-text::before,
+.mark-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mark-text::before {
+  color: color-mix(in srgb, var(--c-brand-secondary) 70%, transparent);
+  clip-path: inset(0 0 54% 0);
+  transform: translateX(-1px);
+  opacity: 0.5;
+  animation: markSliceTop 3.4s steps(2, end) infinite;
+}
+
+.mark-text::after {
+  color: color-mix(in srgb, var(--c-brand-primary) 76%, transparent);
+  clip-path: inset(56% 0 0 0);
+  transform: translateX(1px);
+  opacity: 0.44;
+  animation: markSliceBottom 3.4s steps(2, end) infinite;
+}
+
+.mark-spark {
+  position: absolute;
+  right: 0.62rem;
+  top: 0.38rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    0 0 12px var(--c-brand-primary),
+    0 0 28px var(--c-brand-secondary);
+  animation: markSpark 2.4s ease-in-out infinite;
 }
 
 .eyebrow {
@@ -687,6 +807,7 @@ h1 {
   .home-hero {
     grid-template-areas:
       "statement"
+      "mark"
       "copy"
       "stage";
     grid-template-columns: 1fr;
@@ -697,6 +818,11 @@ h1 {
   .hero-stage {
     height: 420px;
     transform: none;
+  }
+
+  .creative-space-mark {
+    justify-self: start;
+    margin-top: -0.4rem;
   }
 
   .statement-line {
@@ -716,6 +842,15 @@ h1 {
   .hero-statement {
     padding-bottom: 0.85rem;
     overflow-x: clip;
+  }
+
+  .creative-space-mark {
+    padding: 0.62rem 0.82rem 0.66rem 0.95rem;
+  }
+
+  .mark-text {
+    font-size: clamp(0.95rem, 5.2vw, 1.22rem);
+    letter-spacing: 0.06em;
   }
 
   .statement-line {
@@ -895,5 +1030,97 @@ h1 {
 
 .hero-statement::after {
   background-size: 200% 100%;
+}
+
+@keyframes markFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes markSweep {
+  0%, 42% {
+    transform: translateX(-120%) skewX(-16deg);
+  }
+  68%, 100% {
+    transform: translateX(120%) skewX(-16deg);
+  }
+}
+
+@keyframes markLineBreath {
+  0%, 100% {
+    transform: scaleX(0.82);
+    opacity: 0.48;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 0.95;
+  }
+}
+
+@keyframes markTextGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: saturate(1);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: saturate(1.25);
+  }
+}
+
+@keyframes markSliceTop {
+  0%, 72%, 100% {
+    transform: translateX(-1px);
+    opacity: 0.38;
+  }
+  76% {
+    transform: translateX(4px);
+    opacity: 0.72;
+  }
+  80% {
+    transform: translateX(-3px);
+    opacity: 0.24;
+  }
+}
+
+@keyframes markSliceBottom {
+  0%, 72%, 100% {
+    transform: translateX(1px);
+    opacity: 0.34;
+  }
+  76% {
+    transform: translateX(-4px);
+    opacity: 0.68;
+  }
+  80% {
+    transform: translateX(3px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes markSpark {
+  0%, 100% {
+    transform: scale(0.72);
+    opacity: 0.44;
+  }
+  45% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes markBarPulse {
+  0%, 100% {
+    transform: scaleY(0.72);
+    opacity: 0.58;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
 }
 </style>

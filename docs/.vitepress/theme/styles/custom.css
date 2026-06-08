@@ -36,6 +36,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.has-directional-cursor,
+.has-directional-cursor * {
+  cursor: none !important;
+}
+
 /* ===== Selection ===== */
 ::selection {
   background: color-mix(in srgb, var(--c-brand-primary) 26%, transparent);

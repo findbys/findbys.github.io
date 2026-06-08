@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: 'CSS 动画基础详细教程：从 transition 到 keyframes',
+    excerpt: '系统讲解 CSS 动画基础，包括 transition、transform、animation、keyframes、缓动函数、性能优化和常见实战效果。',
+    link: '/blog/css-animation-basics',
+    category: 'CSS',
+    color: '#e34f8b',
+    tags: ['CSS', 'Animation', 'Keyframes'],
+    date: '2026-06-08',
+    readTime: '20 min',
+  },
+  {
     title: 'Flutter 中协程原理：把 async/await 讲简单',
     excerpt: '用咖啡店取餐牌和事件循环两个比喻，把 Future、async/await、微任务队列和 Isolate 的关系讲清楚。',
     link: '/blog/flutter/coroutine-principle',

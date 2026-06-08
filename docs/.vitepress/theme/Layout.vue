@@ -1,5 +1,6 @@
 <template>
   <div class="custom-layout">
+    <DirectionalCursor />
     <DefaultTheme.Layout>
       <template #nav-bar-title-before>
         <span class="nav-logo">
@@ -26,6 +27,7 @@
 
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
+import DirectionalCursor from './components/DirectionalCursor.vue'
 </script>
 
 <style scoped>
