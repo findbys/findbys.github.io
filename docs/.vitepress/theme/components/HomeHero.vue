@@ -29,7 +29,7 @@
 
     <div class="hero-copy">
       <p class="hero-desc">
-        关注 AI 、全栈、跨端、工程化。这里记录项目实践、技术复盘，以及我对前端体验细节的长期打磨。
+        关注 AI 、全栈、跨端、工程化。这里记录项目实践、技术复盘，以及对交互创意的长期打磨。
       </p>
 
       <div class="hero-actions">
