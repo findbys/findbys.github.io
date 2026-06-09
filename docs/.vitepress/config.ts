@@ -16,6 +16,12 @@ export default defineConfig({
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     ['link', { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap', rel: 'stylesheet' }],
     ['meta', { name: 'theme-color', content: '#f8f7f2' }],
+    ['script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-TBGY8FMEJB' }],
+    [
+      'script',
+      {},
+      "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-TBGY8FMEJB');"
+    ],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: '肖青林 - 全栈工程师技术博客' }],
     ['meta', { property: 'og:description', content: '分享前端、Flutter、工程化等技术干货' }],
