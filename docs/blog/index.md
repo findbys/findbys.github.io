@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: 'Flutter 工程化实战：大型项目目录结构划分与解耦指南',
+    excerpt: '告别层级混沌！从 Feature-First 架构到 core/shared 职责边界划分，聊聊 Flutter 项目怎么放代码才好维护、易扩展。',
+    link: '/blog/flutter/project-structure',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '工程化', '目录架构'],
+    date: '2026-08-06',
+    readTime: '15 min',
+  },
+  {
     title: 'CSS 动画基础详细教程：从 transition 到 keyframes',
     excerpt: '系统讲解 CSS 动画基础，包括 transition、transform、animation、keyframes、缓动函数、性能优化和常见实战效果。',
     link: '/blog/css-animation-basics',
