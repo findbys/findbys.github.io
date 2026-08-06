@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: 'Harness Engineering 落地指南：搞懂测试脚手架工程与 AI 时代防护网',
+    excerpt: '大白话拆解 Harness Engineering 核心思想，配图文教你如何为项目搭建自动化测试脚手架与反脆弱反馈闭环。',
+    link: '/blog/engineering/harness-engineering',
+    category: '工程化',
+    color: '#bd34fe',
+    tags: ['工程化', 'Harness', '测试脚手架'],
+    date: '2026-08-06',
+    readTime: '16 min',
+  },
+  {
     title: 'Flutter 工程化实战：大型项目目录结构划分与解耦指南',
     excerpt: '告别层级混沌！从 Feature-First 架构到 core/shared 职责边界划分，聊聊 Flutter 项目怎么放代码才好维护、易扩展。',
     link: '/blog/flutter/project-structure',
