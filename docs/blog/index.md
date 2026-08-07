@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '2026 年 Flutter 状态管理选型：Provider、Riverpod、BLoC、GetX 深度横评',
+    excerpt: '从底层原理到真实落地，全面剖析 2026 年主流 Flutter 状态管理框架的优缺点与适用场景，给你的新项目指明选型路线。',
+    link: '/blog/flutter/state-management-comparison',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '状态管理', 'Riverpod', 'BLoC'],
+    date: '2026-08-07',
+    readTime: '18 min',
+  },
+  {
     title: 'Harness Engineering 落地指南：搞懂测试脚手架工程与 AI 时代防护网',
     excerpt: '大白话拆解 Harness Engineering 核心思想，配图文教你如何为项目搭建自动化测试脚手架与反脆弱反馈闭环。',
     link: '/blog/engineering/harness-engineering',

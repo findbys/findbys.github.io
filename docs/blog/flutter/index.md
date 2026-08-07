@@ -5,6 +5,7 @@ description: Flutter 相关文章合集。
 
 # Flutter 系列
 
+- [2026 年 Flutter 状态管理选型：Provider、Riverpod、BLoC、GetX 深度横评](/blog/flutter/state-management-comparison)
 - [Flutter 工程化实战：大型项目目录结构划分与解耦指南](/blog/flutter/project-structure)
 - [Flutter 中协程原理：把 async/await 讲简单](/blog/flutter/coroutine-principle)
 - [Flutter BLoC 状态管理最佳实践](/blog/flutter/bloc-pattern)
