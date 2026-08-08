@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '2026 跨端技术硬核横评：Lynx、Kuikly、Weex/Rax、UniApp、Flutter 与 RN 原理解析',
+    excerpt: '从 Web 容器、原生控件映射到自绘引擎，深入拆解大厂主流跨端框架的底层架构、渲染流水线、通信开销与选型权衡。',
+    link: '/blog/engineering/cross-platform-frameworks',
+    category: '工程化',
+    color: '#bd34fe',
+    tags: ['跨端开发', 'Flutter', 'React Native', 'Lynx'],
+    date: '2026-08-08',
+    readTime: '22 min',
+  },
+  {
     title: '2026 年 Flutter 状态管理选型：Provider、Riverpod、BLoC、GetX 深度横评',
     excerpt: '从底层原理到真实落地，全面剖析 2026 年主流 Flutter 状态管理框架的优缺点与适用场景，给你的新项目指明选型路线。',
     link: '/blog/flutter/state-management-comparison',
