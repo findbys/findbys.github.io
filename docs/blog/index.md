@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '用 Git Worktree 解决"一个仓库多 workspace"开发难题',
+    excerpt: '用 Git Worktree 让一个仓库同时拥有多个独立工作区，分享我常用的命令、工作流和踩过的坑。',
+    link: '/blog/git/git-worktree',
+    category: 'Git',
+    color: '#f05032',
+    tags: ['Git', 'Worktree', '分支管理', '多工作区', '开发效率'],
+    date: '2026-08-09',
+    readTime: '16 min',
+  },
+  {
     title: '2026 跨端技术硬核横评：Lynx、Kuikly、Weex/Rax、UniApp、Flutter 与 RN 原理解析',
     excerpt: '从 Web 容器、原生控件映射到自绘引擎，深入拆解大厂主流跨端框架的底层架构、渲染流水线、通信开销与选型权衡。',
     link: '/blog/engineering/cross-platform-frameworks',
