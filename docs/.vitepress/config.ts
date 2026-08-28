@@ -37,6 +37,7 @@ export default defineConfig({
           { text: 'Vue3 系列', link: '/blog/vue3/' },
           { text: 'Flutter 系列', link: '/blog/flutter/' },
           { text: '工程化', link: '/blog/engineering/' },
+          { text: 'Git 系列', link: '/blog/git/' },
         ]
       },
       // { text: '基础教程', link: '/tutorials/' },

@@ -6,6 +6,36 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '用 Git Worktree 解决"一个仓库多 workspace"开发难题',
+    excerpt: '用 Git Worktree 让一个仓库同时拥有多个独立工作区，分享我常用的命令、工作流和踩过的坑。',
+    link: '/blog/git/git-worktree',
+    category: 'Git',
+    color: '#f05032',
+    tags: ['Git', 'Worktree', '分支管理', '多工作区', '开发效率'],
+    date: '2026-08-09',
+    readTime: '16 min',
+  },
+  {
+    title: 'Flutter Riverpod Clean Architecture：一份可直接落地的生产级模板',
+    excerpt: '介绍 ssoad/flutter_riverpod_clean_architecture 模板，从 Clean Architecture 四层划分、Screaming Architecture 目录组织到 Riverpod 依赖注入，配完整代码示例与真实架构图。',
+    link: '/blog/flutter/flutter-riverpod-clean-arch',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', 'Riverpod', 'Clean Architecture', '状态管理'],
+    date: '2026-08-25',
+    readTime: '18 min',
+  },
+  {
+    title: 'Flutter 3D 游戏开发实战：用 three_dart 从旋转立方体到完整小游戏',
+    excerpt: '不依赖 Unity，不嵌入原生引擎，仅用 Flutter + three_dart 构建一个可运行的 3D 小游戏。场景搭建、渲染循环、输入交互、碰撞计分，配真实渲染截图。',
+    link: '/blog/flutter/flutter-3d-game',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', 'three_dart', '3D 游戏', 'flutter_gl', '游戏开发'],
+    date: '2026-08-24',
+    readTime: '22 min',
+  },
+  {
     title: '2026 跨端技术硬核横评：Lynx、Kuikly、Weex/Rax、UniApp、Flutter 与 RN 原理解析',
     excerpt: '从 Web 容器、原生控件映射到自绘引擎，深入拆解大厂主流跨端框架的底层架构、渲染流水线、通信开销与选型权衡。',
     link: '/blog/engineering/cross-platform-frameworks',
