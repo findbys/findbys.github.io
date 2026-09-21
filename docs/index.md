@@ -11,6 +11,16 @@ description: findbys 的个人技术博客，记录 Vue、Flutter、工程化与
 <script setup>
 const recentPosts = [
   {
+    title: '深入 Dart 事件循环：单线程如何撑起高并发',
+    excerpt: '从 Event Loop、Microtask Queue、Event Queue 的优先级调度，到与 JavaScript 事件循环的本质差异，再到 UI 卡顿避坑，一篇讲透 Dart 异步底层运转。',
+    link: '/blog/dart/event-loop',
+    category: 'Dart',
+    color: '#0175c2',
+    tags: ['Dart', 'Flutter', '事件循环', '异步', 'Isolate'],
+    date: '2026-08-27',
+    readTime: '20 min',
+  },
+  {
     title: 'Flutter Riverpod Clean Architecture：一份可直接落地的生产级模板',
     excerpt: '介绍 ssoad/flutter_riverpod_clean_architecture 模板，从四层划分、目录组织到 Riverpod 依赖注入，配完整代码示例与真实架构图。',
     link: '/blog/flutter/flutter-riverpod-clean-arch',
@@ -39,16 +49,6 @@ const recentPosts = [
     tags: ['Git', 'Worktree', '分支管理', '多工作区', '开发效率'],
     date: '2026-08-09',
     readTime: '16 min',
-  },
-  {
-    title: '2026 跨端技术硬核横评：Lynx、Kuikly、Weex/Rax、UniApp、Flutter 与 RN 原理解析',
-    excerpt: '从 Web 容器、原生控件映射到自绘引擎，拆解大厂主流跨端框架的底层架构、渲染流水线、通信开销与选型权衡。',
-    link: '/blog/engineering/cross-platform-frameworks',
-    category: '工程化',
-    color: '#bd34fe',
-    tags: ['跨端开发', 'Flutter', 'React Native', 'Lynx'],
-    date: '2026-08-08',
-    readTime: '22 min',
   },
 ]
 </script>

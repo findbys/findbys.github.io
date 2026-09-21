@@ -6,6 +6,26 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '深入浅出 Flutter 底层通信：从 BinaryMessenger 原理到双端实战与架构演进',
+    excerpt: '从 BinaryMessenger 二进制消息传递机制与线程模型切入，手把手拆解 MethodChannel、EventChannel、BasicMessageChannel 双端实现，对比 Pigeon 与 Dart FFI 演进。',
+    link: '/blog/flutter/flutter-native-communication',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '跨平台通信', 'Platform Channel', 'Android', 'iOS'],
+    date: '2026-09-01',
+    readTime: '20 min',
+  },
+  {
+    title: '深入 Dart 事件循环：单线程如何撑起高并发',
+    excerpt: '从 Event Loop、Microtask Queue、Event Queue 的优先级调度，到与 JavaScript 事件循环的本质差异，再到 UI 卡顿避坑，一篇讲透 Dart 异步底层运转。',
+    link: '/blog/dart/event-loop',
+    category: 'Dart',
+    color: '#0175c2',
+    tags: ['Dart', 'Flutter', '事件循环', '异步', 'Isolate'],
+    date: '2026-08-27',
+    readTime: '20 min',
+  },
+  {
     title: '用 Git Worktree 解决"一个仓库多 workspace"开发难题',
     excerpt: '用 Git Worktree 让一个仓库同时拥有多个独立工作区，分享我常用的命令、工作流和踩过的坑。',
     link: '/blog/git/git-worktree',

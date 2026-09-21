@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信公众号排版预览 - Flutter 底层通信全景拆解</title>
+  <style>
+    body {
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .toolbar {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      max-width: 680px;
+      margin: 0 auto 20px;
+      background: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toolbar h2 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .copy-btn {
+      background: linear-gradient(135deg, #02569B, #0175C2);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(2,86,155,0.3);
+    }
+    .copy-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+    .tip-toast {
+      display: none;
+      margin-left: 12px;
+      color: #07c160;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .article-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <h2>📱 微信公众号排版一键复制预览</h2>
+    <div>
+      <span id="toast" class="tip-toast">✅ 已成功复制富文本！直接去微信后台 Ctrl+V</span>
+      <button class="copy-btn" onclick="copyArticle()">📋 一键复制到公众号</button>
+    </div>
+  </div>
+
+  <div class="article-container">
+    <!-- 下面内容为渲染到微信公众号的纯净富文本内容（内联样式 Inline CSS） -->
+    <div id="wechat-article-content" style="font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', Roboto, sans-serif; font-size: 15px; line-height: 1.8; color: #2b2b2b; letter-spacing: 0.5px; word-break: break-word;">
+      
+      <!-- 导读卡片 -->
+      <section style="margin: 0 0 26px 0; padding: 18px 20px; background: #f0f7fc; border-left: 4px solid #02569B; border-radius: 8px;">
+        <div style="font-size: 13px; font-weight: bold; color: #02569B; margin-bottom: 6px; display: flex; align-items: center;">
+          <span style="background: #02569B; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-right: 8px;">深度硬核</span>
+          <span>跨平台通信 / Platform Channel / Pigeon / FFI</span>
+        </div>
+        <p style="margin: 0; font-size: 14px; color: #4a5568; line-height: 1.6;">
+          从 <strong>BinaryMessenger</strong> 二进制消息传递机制与线程模型切入，手把手拆解 MethodChannel、EventChannel、BasicMessageChannel 双端实现，深度对比 Pigeon 与 Dart FFI 演进。
+        </p>
+      </section>
+
+      <!-- 引言段落 -->
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        在跨平台架构演进中，无论 UI 层封装得多么精致，应用最终都要和操作系统底层打交道。许多开发者初学 Flutter 时，常把 MethodChannel 当成黑盒调用：调一个 <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: Consolas, monospace;">invokeMethod</code>，原生端接收执行，再返回结果。
+      </p>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        但在高并发复杂业务中，一旦涉及<strong>高频传感器采集、大文件二进制传输、混合工程多实例路由</strong>，这种黑盒认知就会立刻遇到瓶颈：
+      </p>
+
+      <!-- 核心反思列表 -->
+      <ul style="margin: 12px 0 20px 0; padding-left: 20px; color: #4a5568;">
+        <li style="margin-bottom: 6px;">为什么高频通信会引起 UI 掉帧？</li>
+        <li style="margin-bottom: 6px;">跨线程切换的代价到底有多大？</li>
+        <li style="margin-bottom: 6px;">什么时候该放弃 Channel 改用 FFI？</li>
+      </ul>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        今天我们抛开浅层 API 的泛泛而谈，从 C++ Engine 层的 <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: Consolas, monospace;">BinaryMessenger</code> 机制讲起，深入剖析 Flutter 与 Android (Kotlin) / iOS (Swift) 的底层通信全貌。
+      </p>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 1 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">1</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">为什么必须与原生通信？业务场景透视</h2>
+        </div>
+      </section>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        在纯 Flutter 架构中，Skia/Impeller 负责渲染，Dart VM 负责逻辑执行。但只要涉及硬件访问或操作系统能力，就必须穿透 Dart 运行时进入 Platform 宿主环境：
+      </p>
+
+      <!-- 4类核心场景卡片 -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 18px; margin: 18px 0;">
+        <div style="font-size: 14px; font-weight: bold; color: #1e293b; margin-bottom: 10px; display: flex; align-items: center;">
+          <span style="margin-right: 6px;">🎯</span> 必须穿透原生的 4 类核心业务场景
+        </div>
+        <div style="margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #3b82f6;">
+          <strong style="color: #0f172a; font-size: 14px;">1. 硬件与传感器调用</strong>
+          <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b;">低功耗蓝牙 (BLE) 扫描与外设通信、多摄像头并行采集、车载陀螺仪高频数据采样。</p>
+        </div>
+        <div style="margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #10b981;">
+          <strong style="color: #0f172a; font-size: 14px;">2. 合规与第三方原生 SDK</strong>
+          <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b;">特定银行人脸活体核身、银联/微信双端专有支付 SDK、硬隔离安全加密芯片 (TEE/SE) 调用。</p>
+        </div>
+        <div style="margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #f59e0b;">
+          <strong style="color: #0f172a; font-size: 14px;">3. 系统级后台长任务</strong>
+          <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b;">Android 前台服务 (Foreground Service) 保活、iOS Background Tasks 与静默推送唤醒。</p>
+        </div>
+        <div style="padding-left: 10px; border-left: 3px solid #8b5cf6;">
+          <strong style="color: #0f172a; font-size: 14px;">4. 混合栈多实例协同</strong>
+          <p style="margin: 2px 0 0 0; font-size: 13px; color: #64748b;">在大型原生宿主 App 中嵌入 Flutter Boost 等混合栈方案时，双端生命周期同步与路由栈状态拦截。</p>
+        </div>
+      </div>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 2 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">2</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">剥开黑盒：Platform Channel 底层传输机制与线程模型</h2>
+        </div>
+      </section>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        Flutter 与原生的通信本质上是<strong>进程内跨线程的异步二进制消息传递</strong>。
+      </p>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 22px 0 10px 0;">2.1 核心角色与数据流转</h3>
+
+      <p style="margin: 12px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        整个通道体系建立在以下三个核心构件之上：
+      </p>
+
+      <ul style="margin: 10px 0 16px 0; padding-left: 20px; color: #374151;">
+        <li style="margin-bottom: 8px;"><strong>BinaryMessenger</strong>：通信基础设施。负责在 Dart 和 Platform 之间发送和接收原始字节流（<code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">ByteData</code> / <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">ByteBuffer</code>）。它完全不关心业务数据类型，只负责把内存字节从 A 点投递到 B 点。</li>
+        <li style="margin-bottom: 8px;"><strong>MessageCodec / MethodCodec</strong>：二进制与高级对象之间的翻译官。将 Dart 或原生的高级类型（Map、List、String、Int）按协议序列化为二进制流。</li>
+        <li style="margin-bottom: 8px;"><strong>Channel 封装层</strong>（MethodChannel / EventChannel / BasicMessageChannel）：在 BinaryMessenger 基础上封装了方法路由、调用凭证 (Call ID) 和错误回调语义。</li>
+      </ul>
+
+      <!-- 重构：优雅架构流程图卡片（替换原破坏性 ASCII 字符画） -->
+      <div style="margin: 20px 0; border: 1px solid #dbeafe; background: #f8fafc; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <div style="background: #02569B; color: #ffffff; padding: 8px 16px; font-size: 13px; font-weight: bold;">
+          📊 架构全景：Dart UI Runner 到 Platform Thread 数据流向
+        </div>
+        <div style="padding: 16px;">
+          <!-- 节点 1 -->
+          <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px;">
+            <div style="font-size: 12px; font-weight: bold; color: #1e40af;">[1] Dart UI Runner (Dart VM)</div>
+            <div style="font-size: 13px; color: #334155; margin-top: 4px;">
+              Flutter App 触发 <code>MethodChannel.invokeMethod('getBatteryLevel')</code><br>
+              &darr; <code>MethodCodec</code> 序列化为 ByteData 二进制流<br>
+              &darr; <code>BinaryMessenger.send('com.tech.flutter/battery', buffer)</code>
+            </div>
+          </div>
+          <!-- 调度中心 -->
+          <div style="text-align: center; color: #02569B; font-weight: bold; font-size: 12px; margin: 6px 0;">
+            ⬇ C++ Engine 跨线程调度 (TaskRunner::PostTask) ⬇
+          </div>
+          <!-- 节点 2 -->
+          <div style="background: #ffffff; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 14px;">
+            <div style="font-size: 12px; font-weight: bold; color: #166534;">[2] Platform Thread (Android / iOS 主线程)</div>
+            <div style="font-size: 13px; color: #334155; margin-top: 4px;">
+              Platform BinaryMessenger (FlutterJNI / FlutterEngine) 接收字节流<br>
+              &darr; <code>MethodCodec</code> 反序列化为 MethodCall (方法名 + 参数)<br>
+              &darr; 触发 <code>MethodCallHandler.onMethodCall()</code> 并在原生执行 (Kotlin / Swift)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 26px 0 10px 0;">2.2 跨线程调度：UI Runner 与 Platform Thread</h3>
+
+      <p style="margin: 12px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        理解通道性能，核心在于理解 Flutter Engine 的线程模型与数据流向：
+      </p>
+
+      <ol style="margin: 10px 0 16px 0; padding-left: 20px; color: #374151;">
+        <li style="margin-bottom: 6px;">Dart 代码发起调用后，<code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">StandardMethodCodec</code> 将方法名和参数编码成二进制 Buffer。</li>
+        <li style="margin-bottom: 6px;">Engine 通过 <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">PostTask</code> 将这个 Buffer 抛到 Platform Thread。</li>
+        <li style="margin-bottom: 6px;">宿主环境（Android <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">FlutterJNI</code> / iOS <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">FlutterEngine</code>）在主线程被唤醒，反序列化参数并分发执行。</li>
+        <li style="margin-bottom: 6px;">原生端返回结果时，走相反路径打包为二进制流，<code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">PostTask</code> 回 UI Runner 触发 Dart 的 <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">Future</code> 完成。</li>
+      </ol>
+
+      <!-- 架构师视角警告框 -->
+      <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 14px 16px; border-radius: 6px; margin: 18px 0;">
+        <div style="font-size: 14px; font-weight: bold; color: #b45309; margin-bottom: 4px;">⚠️ 架构师视角核心注意点</div>
+        <p style="margin: 0; font-size: 13.5px; color: #92400e; line-height: 1.6;">
+          Platform Channel 默认的接收与派发都在<strong>原生主线程</strong>。如果在原生 Handler 中直接执行耗时 I/O、图片压缩或复杂加解密，会直接阻塞 Android/iOS 的主 Looper，导致界面严重卡顿甚至引发 ANR！
+        </p>
+      </div>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 3 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">3</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">三大通信方式全景拆解与工程实战</h2>
+        </div>
+      </section>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        针对不同通信形态，官方提供了三种通道封装。下面以生产级规范给出 Dart、Android (Kotlin) 与 iOS (Swift) 的对照实现。
+      </p>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 24px 0 10px 0;">3.1 MethodChannel：单次异步请求/响应</h3>
+      <p style="margin: 8px 0 12px 0; font-size: 14px; color: #4b5563;">
+        <strong>适用场景</strong>：一次请求、单次应答。如查询电量、调用原生弹窗、发起单次支付请求。
+      </p>
+
+      <!-- 代码块卡片 1: Dart -->
+      <div style="background: #1e293b; border-radius: 8px; margin: 16px 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="background: #0f172a; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 6px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          </div>
+          <span style="color: #94a3b8; font-size: 12px; font-family: Consolas, monospace;">battery_service.dart</span>
+        </div>
+        <pre style="margin: 0; padding: 14px; overflow-x: auto; color: #e2e8f0; font-family: Consolas, Monaco, Courier New, monospace; font-size: 13px; line-height: 1.6; white-space: pre;"><span style="color: #64748b;">// battery_service.dart</span>
+<span style="color: #f472b6;">import</span> <span style="color: #a5f3fc;">'package:flutter/services.dart'</span>;
+
+<span style="color: #60a5fa;">class</span> <span style="color: #fde047;">BatteryService</span> {
+  <span style="color: #64748b;">// 通道命名采用反向域名规范，避免命名冲突</span>
+  <span style="color: #f472b6;">static const</span> MethodChannel _channel = 
+      MethodChannel(<span style="color: #a5f3fc;">'com.tech.flutter/battery'</span>);
+
+  <span style="color: #64748b;">/// 获取设备当前电量（百分比 0-100）</span>
+  <span style="color: #f472b6;">static</span> Future&lt;<span style="color: #4ade80;">int?</span>&gt; getBatteryLevel() <span style="color: #f472b6;">async</span> {
+    <span style="color: #f472b6;">try</span> {
+      <span style="color: #f472b6;">final</span> <span style="color: #4ade80;">int?</span> result = <span style="color: #f472b6;">await</span> _channel.invokeMethod&lt;<span style="color: #4ade80;">int</span>&gt;(<span style="color: #a5f3fc;">'getBatteryLevel'</span>);
+      <span style="color: #f472b6;">return</span> result;
+    } <span style="color: #f472b6;">on</span> PlatformException <span style="color: #f472b6;">catch</span> (e) {
+      print(<span style="color: #a5f3fc;">"获取电量平台异常: ${e.code}, 原因: ${e.message}"</span>);
+      <span style="color: #f472b6;">return null</span>;
+    } <span style="color: #f472b6;">on</span> MissingPluginException {
+      print(<span style="color: #a5f3fc;">"通道未注册或方法未实现"</span>);
+      <span style="color: #f472b6;">return null</span>;
+    }
+  }
+}</pre>
+      </div>
+
+      <!-- 代码块卡片 2: Kotlin -->
+      <div style="background: #1e293b; border-radius: 8px; margin: 16px 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="background: #0f172a; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 6px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          </div>
+          <span style="color: #94a3b8; font-size: 12px; font-family: Consolas, monospace;">MainActivity.kt</span>
+        </div>
+        <pre style="margin: 0; padding: 14px; overflow-x: auto; color: #e2e8f0; font-family: Consolas, Monaco, Courier New, monospace; font-size: 13px; line-height: 1.6; white-space: pre;"><span style="color: #64748b;">// Android (Kotlin) 端实现</span>
+<span style="color: #60a5fa;">class</span> <span style="color: #fde047;">MainActivity</span> : FlutterActivity() {
+    <span style="color: #f472b6;">private val</span> BATTERY_CHANNEL = <span style="color: #a5f3fc;">"com.tech.flutter/battery"</span>
+
+    <span style="color: #f472b6;">override fun</span> configureFlutterEngine(flutterEngine: FlutterEngine) {
+        <span style="color: #f472b6;">super</span>.configureFlutterEngine(flutterEngine)
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger, 
+            BATTERY_CHANNEL
+        ).setMethodCallHandler { call, result -&gt;
+            <span style="color: #f472b6;">when</span> (call.method) {
+                <span style="color: #a5f3fc;">"getBatteryLevel"</span> -&gt; {
+                    <span style="color: #f472b6;">val</span> batteryLevel = getBatteryLevel()
+                    <span style="color: #f472b6;">if</span> (batteryLevel != -1) {
+                        result.success(batteryLevel)
+                    } <span style="color: #f472b6;">else</span> {
+                        result.error(<span style="color: #a5f3fc;">"UNAVAILABLE"</span>, <span style="color: #a5f3fc;">"无法读取系统电量"</span>, <span style="color: #f472b6;">null</span>)
+                    }
+                }
+                <span style="color: #f472b6;">else</span> -&gt; result.notImplemented()
+            }
+        }
+    }
+}</pre>
+      </div>
+
+      <!-- 代码块卡片 3: Swift -->
+      <div style="background: #1e293b; border-radius: 8px; margin: 16px 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="background: #0f172a; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 6px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          </div>
+          <span style="color: #94a3b8; font-size: 12px; font-family: Consolas, monospace;">AppDelegate.swift</span>
+        </div>
+        <pre style="margin: 0; padding: 14px; overflow-x: auto; color: #e2e8f0; font-family: Consolas, Monaco, Courier New, monospace; font-size: 13px; line-height: 1.6; white-space: pre;"><span style="color: #64748b;">// iOS (Swift) 端实现</span>
+<span style="color: #f472b6;">let</span> batteryChannel = FlutterMethodChannel(
+    name: <span style="color: #a5f3fc;">"com.tech.flutter/battery"</span>,
+    binaryMessenger: controller.binaryMessenger
+)
+
+batteryChannel.setMethodCallHandler { [<span style="color: #f472b6;">weak self</span>] (call, result) <span style="color: #f472b6;">in</span>
+    <span style="color: #f472b6;">guard</span> call.method == <span style="color: #a5f3fc;">"getBatteryLevel"</span> <span style="color: #f472b6;">else</span> {
+        result(FlutterMethodNotImplemented)
+        <span style="color: #f472b6;">return</span>
+    }
+    <span style="color: #f472b6;">let</span> device = UIDevice.current
+    device.isBatteryMonitoringEnabled = <span style="color: #f472b6;">true</span>
+    <span style="color: #f472b6;">if</span> device.batteryState == .unknown {
+        result(FlutterError(code: <span style="color: #a5f3fc;">"UNAVAILABLE"</span>, message: <span style="color: #a5f3fc;">"无法读取电量"</span>, details: <span style="color: #f472b6;">nil</span>))
+    } <span style="color: #f472b6;">else</span> {
+        result(<span style="color: #4ade80;">Int</span>(device.batteryLevel * 100))
+    }
+}</pre>
+      </div>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 26px 0 10px 0;">3.2 EventChannel：持续数据流监听</h3>
+      <p style="margin: 8px 0 12px 0; font-size: 14px; color: #4b5563;">
+        <strong>适用场景</strong>：原生持续向 Flutter 推送事件流。如充电状态改变、手机摇一摇传感器持续上报、网络连接状态切换。
+      </p>
+
+      <!-- EventChannel Dart 代码 -->
+      <div style="background: #1e293b; border-radius: 8px; margin: 16px 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <div style="background: #0f172a; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 6px;">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          </div>
+          <span style="color: #94a3b8; font-size: 12px; font-family: Consolas, monospace;">battery_stream_service.dart</span>
+        </div>
+        <pre style="margin: 0; padding: 14px; overflow-x: auto; color: #e2e8f0; font-family: Consolas, Monaco, Courier New, monospace; font-size: 13px; line-height: 1.6; white-space: pre;"><span style="color: #60a5fa;">class</span> <span style="color: #fde047;">BatteryStreamService</span> {
+  <span style="color: #f472b6;">static const</span> EventChannel _eventChannel = 
+      EventChannel(<span style="color: #a5f3fc;">'com.tech.flutter/battery_stream'</span>);
+
+  <span style="color: #64748b;">/// 暴露为响应式数据流 Stream</span>
+  <span style="color: #f472b6;">static</span> Stream&lt;<span style="color: #4ade80;">String</span>&gt; <span style="color: #f472b6;">get</span> batteryStatusStream {
+    <span style="color: #f472b6;">return</span> _eventChannel
+        .receiveBroadcastStream()
+        .map((<span style="color: #4ade80;">dynamic</span> event) =&gt; event.toString());
+  }
+}</pre>
+      </div>
+
+      <!-- 生命周期说明 -->
+      <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 6px; margin: 14px 0;">
+        <strong style="color: #065f46; font-size: 13.5px;">💡 原生端生命周期核心要点：</strong>
+        <p style="margin: 4px 0 0 0; font-size: 13px; color: #047857; line-height: 1.6;">
+          在 Android 的 <code style="background: #d1fae5; color: #065f46; padding: 1px 4px; border-radius: 3px;">onCancel</code> 与 iOS 的 <code style="background: #d1fae5; color: #065f46; padding: 1px 4px; border-radius: 3px;">onCancelWithArguments</code> 中，<strong>必须注销广播并主动清空 eventSink</strong>，否则会导致页面销毁后原生监听器依然在后台运行，引发严重内存泄漏！
+        </p>
+      </div>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 26px 0 10px 0;">3.3 BasicMessageChannel：双向持续通信与 Codec 选型</h3>
+      <p style="margin: 8px 0 12px 0; font-size: 14px; color: #4b5563;">
+        <strong>适用场景</strong>：双端频繁收发自定义结构数据或超大二进制数据块（如连续的图像帧分片、自定义协议报文）。
+      </p>
+
+      <!-- 表格 1：自适应横向滚动优化 -->
+      <div style="margin: 16px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid #e5e7eb;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; min-width: 500px;">
+          <thead>
+            <tr style="background: #f1f5f9; color: #1e293b; border-bottom: 2px solid #cbd5e1;">
+              <th style="padding: 10px 12px; font-weight: bold;">编解码器</th>
+              <th style="padding: 10px 12px; font-weight: bold;">数据类型支持</th>
+              <th style="padding: 10px 12px; font-weight: bold;">性能开销</th>
+              <th style="padding: 10px 12px; font-weight: bold;">适用场景</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #f1f5f9;">
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">StandardMessageCodec</td>
+              <td style="padding: 10px 12px;">基本类型、List、Map 嵌套</td>
+              <td style="padding: 10px 12px;">紧凑二进制优化</td>
+              <td style="padding: 10px 12px;">通用业务数据传输（默认推荐）</td>
+            </tr>
+            <tr style="background: #f8fafc; border-bottom: 1px solid #f1f5f9;">
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">JSONMessageCodec</td>
+              <td style="padding: 10px 12px;">UTF-8 JSON 字符串</td>
+              <td style="padding: 10px 12px;">需额外解析转换</td>
+              <td style="padding: 10px 12px;">与 Web/老接口兼容的场景</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f1f5f9;">
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">StringCodec</td>
+              <td style="padding: 10px 12px;">纯文本字符串</td>
+              <td style="padding: 10px 12px;">极低</td>
+              <td style="padding: 10px 12px;">纯文本、长日志流传输</td>
+            </tr>
+            <tr style="background: #f8fafc;">
+              <td style="padding: 10px 12px; font-weight: bold; color: #16a34a;">BinaryCodec</td>
+              <td style="padding: 10px 12px;">原始 ByteData / ByteBuffer</td>
+              <td style="padding: 10px 12px; color: #16a34a; font-weight: bold;">零转换开销（最快）</td>
+              <td style="padding: 10px 12px;">传输图像帧、音频流原始二进制</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 4 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">4</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">架构进阶：现代通信方案的演进与选型</h2>
+        </div>
+      </section>
+
+      <p style="margin: 16px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        手写 MethodChannel 传递复杂参数通常有两大痛点：<strong>类型不安全（拼错字段运行时才报错）</strong> 与 <strong>序列化性能开销</strong>。
+      </p>
+
+      <!-- 现代演进阶梯卡片 -->
+      <div style="background: #f8fafc; border-radius: 10px; padding: 16px; margin: 18px 0; border: 1px solid #e2e8f0;">
+        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+          <span style="background: #94a3b8; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 8px;">阶段 1</span>
+          <strong style="font-size: 14px; color: #1e293b;">传统 MethodChannel</strong>
+          <span style="font-size: 12px; color: #64748b; margin-left: 8px;">(弱类型 / 字符串匹配 / 反射与 Map 转换)</span>
+        </div>
+        <div style="text-align: center; color: #94a3b8; font-size: 12px; margin: -4px 0 8px 0;">⬇ 引入代码生成工具 ⬇</div>
+        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+          <span style="background: #02569B; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 8px;">阶段 2</span>
+          <strong style="font-size: 14px; color: #02569B;">Pigeon (类型安全契约)</strong>
+          <span style="font-size: 12px; color: #64748b; margin-left: 8px;">(强类型 / 自动生成双端代码 / 编译期排错)</span>
+        </div>
+        <div style="text-align: center; color: #02569B; font-size: 12px; margin: -4px 0 8px 0;">⬇ 极致性能需求 ⬇</div>
+        <div style="display: flex; align-items: center;">
+          <span style="background: #10b981; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 8px;">阶段 3</span>
+          <strong style="font-size: 14px; color: #047857;">Dart FFI (C/C++ 内存直连)</strong>
+          <span style="font-size: 12px; color: #64748b; margin-left: 8px;">(绕过主线程 / 零拷贝共享内存 / 同步调用)</span>
+        </div>
+      </div>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 22px 0 8px 0;">4.1 Pigeon：工业级类型安全方案</h3>
+      <p style="margin: 8px 0 14px 0; font-size: 14.5px; line-height: 1.8; color: #374151;">
+        Pigeon 通过编写一份 <code style="background: #eef2f7; color: #02569B; padding: 2px 6px; border-radius: 4px; font-size: 13px;">.dart</code> 协议定义文件，在编译前自动生成 Dart、Kotlin 和 Swift 的强类型绑定代码。它彻底消除了魔术字符串（Magic Strings），在中大型跨端团队协作中极为推荐。
+      </p>
+
+      <h3 style="font-size: 16px; font-weight: bold; color: #02569B; margin: 22px 0 8px 0;">4.2 Dart FFI：极速内存直通</h3>
+      <p style="margin: 8px 0 14px 0; font-size: 14.5px; line-height: 1.8; color: #374151;">
+        对于高帧率音视频处理、C++ 核心算法引擎或 SQLite 底层，Dart 指针可直接访问 C 语言堆内存，做到真正的<strong>零拷贝与纳秒级同步调用</strong>，无需经历异步 Future 调度循环。
+      </p>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 5 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">5</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">架构师避坑与性能调优指南</h2>
+        </div>
+      </section>
+
+      <div style="margin: 16px 0; padding: 14px 16px; background: #f8fafc; border-left: 4px solid #3b82f6; border-radius: 6px;">
+        <strong style="color: #1e3a8a; font-size: 14px;">1. 警惕序列化与跨线程开销</strong>
+        <p style="margin: 6px 0 0 0; font-size: 13.5px; color: #475569; line-height: 1.7;">
+          • <strong>严禁在 60Hz/120Hz 刷新回调（如 onScroll 或逐帧渲染）中无节制调用 Channel</strong>。频繁交互应在原生端节流 (Throttle) 或批量聚合后一次性下发。<br>
+          • <strong>大数据块严禁使用 JSON 字符串包装</strong>。超过 1MB 数据优先用 <code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">BasicMessageChannel(BinaryCodec())</code> 或 FFI 共享内存。
+        </p>
+      </div>
+
+      <div style="margin: 16px 0; padding: 14px 16px; background: #f8fafc; border-left: 4px solid #10b981; border-radius: 6px;">
+        <strong style="color: #065f46; font-size: 14px;">2. 规范化通道与方法命名空间</strong>
+        <p style="margin: 6px 0 0 0; font-size: 13.5px; color: #475569; line-height: 1.7;">
+          推荐反向域名格式：<code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">com.{company}.{module}.channel_{type}.{feature}</code><br>
+          例如：<code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">com.mycompany.payment.method.wechat_pay</code>，避免多业务团队注册同名通道导致冲突覆盖。
+        </p>
+      </div>
+
+      <div style="margin: 16px 0; padding: 14px 16px; background: #f8fafc; border-left: 4px solid #f59e0b; border-radius: 6px;">
+        <strong style="color: #92400e; font-size: 14px;">3. 严格把控原生主线程安全与生命周期</strong>
+        <p style="margin: 6px 0 0 0; font-size: 13.5px; color: #475569; line-height: 1.7;">
+          • <code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">events.success()</code> 必须在原生主线程发起。后台 I/O 线程计算完毕后务必切回 Main Thread。<br>
+          • 页面 pop 销毁时，原生端必须在 <code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">onCancel</code> 注销广播并将 <code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px;">eventSink</code> 置空，防止内存泄漏。
+        </p>
+      </div>
+
+      <hr style="border: none; border-top: 1px dashed #d1d5db; margin: 30px 0;" />
+
+      <!-- 一级大标题 6 -->
+      <section style="margin: 32px 0 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="background: #02569B; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; margin-right: 10px; flex-shrink: 0; line-height: 28px; text-align: center;">6</span>
+          <h2 style="margin: 0; font-size: 18px; font-weight: bold; color: #1a202c; border-bottom: 2px solid #02569B; padding-bottom: 4px; display: inline-block;">总结与架构选型全景速查</h2>
+        </div>
+      </section>
+
+      <!-- 表格 2：自适应横向滚动优化 -->
+      <div style="margin: 16px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid #e5e7eb;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; min-width: 520px;">
+          <thead>
+            <tr style="background: #02569B; color: #ffffff;">
+              <th style="padding: 10px 12px; font-weight: bold;">需求特征</th>
+              <th style="padding: 10px 12px; font-weight: bold;">推荐选型</th>
+              <th style="padding: 10px 12px; font-weight: bold;">核心考量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 10px 12px; font-weight: 500;">单次设备信息、权限、弹窗</td>
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">MethodChannel</td>
+              <td style="padding: 10px 12px; color: #475569;">逻辑简单，开箱即用，开发成本低</td>
+            </tr>
+            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 10px 12px; font-weight: 500;">传感器流、GPS 定位、蓝牙扫描</td>
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">EventChannel</td>
+              <td style="padding: 10px 12px; color: #475569;">原生持续单向推送，天然契合 Dart Stream</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 10px 12px; font-weight: 500;">协议二进制流、自定义数据管道</td>
+              <td style="padding: 10px 12px; font-weight: bold; color: #02569B;">BasicMessageChannel</td>
+              <td style="padding: 10px 12px; color: #475569;">灵活切换 Codec，规避无效序列化</td>
+            </tr>
+            <tr style="background: #f8fafc; border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 10px 12px; font-weight: 500;">中大型跨端模块规范化交付</td>
+              <td style="padding: 10px 12px; font-weight: bold; color: #16a34a;">Pigeon</td>
+              <td style="padding: 10px 12px; color: #475569;">编译期强类型校验，彻底杜绝双端字段拼写错误</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 10px 12px; font-weight: 500;">音视频解码、图像处理、C++ 核心算法</td>
+              <td style="padding: 10px 12px; font-weight: bold; color: #ea580c;">Dart FFI</td>
+              <td style="padding: 10px 12px; color: #475569;">绕过通道与主线程，零拷贝共享内存极致性能</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin: 20px 0; font-size: 15px; line-height: 1.8; color: #2d3748;">
+        理解了 Platform Channel 的本质是<strong>二进制消息路由与线程调度</strong>，你在面对各种跨端通信需求时，就能根据数据吞吐量与性能要求，做出最合理的架构抉择。
+      </p>
+
+      <!-- 底部关注互动 -->
+      <section style="margin: 36px 0 10px 0; padding: 18px 20px; background: #f8fafc; border-radius: 8px; text-align: center; border: 1px dashed #cbd5e1;">
+        <div style="font-size: 14px; font-weight: bold; color: #02569B;">✨ 感谢阅读，欢迎持续关注交流</div>
+        <p style="margin: 6px 0 0 0; font-size: 13px; color: #64748b;">
+          如果觉得本文对你有启发，欢迎点赞、在看与转发分享给更多跨端开发伙伴！
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    function copyArticle() {
+      const content = document.getElementById('wechat-article-content');
+      
+      // 使用现代 Clipboard API 复制富文本 HTML
+      if (navigator.clipboard && window.ClipboardItem) {
+        const blob = new Blob([content.outerHTML], { type: 'text/html' });
+        const textBlob = new Blob([content.innerText], { type: 'text/plain' });
+        const data = [new ClipboardItem({ 'text/html': blob, 'text/plain': textBlob })];
+        
+        navigator.clipboard.write(data).then(() => {
+          showSuccessToast();
+        }).catch(err => {
+          fallbackCopy(content);
+        });
+      } else {
+        fallbackCopy(content);
+      }
+    }
+
+    function fallbackCopy(element) {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {
+        document.execCommand('copy');
+        showSuccessToast();
+      } catch (err) {
+        alert('复制失败，请手动全选页面内容并复制！');
+      }
+      selection.removeAllRanges();
+    }
+
+    function showSuccessToast() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'inline';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+  </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ description: Flutter 相关文章合集。
 
 # Flutter 系列
 
+- [深入浅出 Flutter 底层通信：从 BinaryMessenger 原理到双端实战与架构演进](/blog/flutter/flutter-native-communication)
 - [Flutter Riverpod Clean Architecture：一份可直接落地的生产级模板](/blog/flutter/flutter-riverpod-clean-arch)
 - [Flutter 3D 游戏开发实战：用 three_dart 从旋转立方体到完整小游戏](/blog/flutter/flutter-3d-game)
 - [2026 年 Flutter 状态管理选型：Provider、Riverpod、BLoC、GetX 深度横评](/blog/flutter/state-management-comparison)

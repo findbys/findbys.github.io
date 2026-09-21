@@ -74,6 +74,9 @@ Git Worktree 允许你**在同一个仓库下维护多个独立的工作目录**
 
 简单理解：仓库的灵魂（commit、tree、blob、ref）只有一份，但你的身体（工作目录）可以有好几个。
 
+![Git Worktree 多工作区并发开发示意图](/images/git_worktree_workspace.jpg)
+*图：Git Worktree 核心概念——底层单一 .git 仓库对象库同时连接并驱动多个独立工作区*
+
 这带来的好处很直接：
 
 - 不用 stash 就能瞬时切换到另一个分支；

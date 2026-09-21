@@ -41,7 +41,7 @@ tags: ['工程化', 'Harness', '测试脚手架', '架构设计']
 
 ## 2. 为什么 AI 编程时代极度依赖 Harness？
 
-现在很多团队都在用 AI 智能体（如 Cursor、Gemini CLI、Claude Engineer）辅助写代码。
+现在很多团队都在用 AI 智能体（如 Cursor、Gemini CLI、Claude Code）辅助写代码。
 
 但很多人发现：**给 AI 提完需求后，AI 生成的代码表面看起来挺像回事，一跑起来各种报错，或者暗中破坏了其他页面的逻辑。**
 
