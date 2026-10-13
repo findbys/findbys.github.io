@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: '科学抗衰老与抗氧化全景指南：基于顶级学术论文与医学研究的循证综述',
+    excerpt: '检索 Cell、Nature、Science、NEJM、CALERIE 等顶尖研究，系统解析衰老十二大标志、抗氧化悖论、生活方式干预、功能性食物与前沿药理学。',
+    link: '/blog/anti-aging-and-antioxidant-guide',
+    category: '前沿科学',
+    color: '#10b981',
+    tags: ['抗衰老', '抗氧化', '长寿医学', '营养学', '循证医学'],
+    date: '2026-10-13',
+    readTime: '25 min',
+  },
+  {
     title: '深入浅出 Flutter 底层通信：从 BinaryMessenger 原理到双端实战与架构演进',
     excerpt: '从 BinaryMessenger 二进制消息传递机制与线程模型切入，手把手拆解 MethodChannel、EventChannel、BasicMessageChannel 双端实现，对比 Pigeon 与 Dart FFI 演进。',
     link: '/blog/flutter/flutter-native-communication',

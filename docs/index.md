@@ -11,6 +11,16 @@ description: findbys 的个人技术博客，记录 Vue、Flutter、工程化与
 <script setup>
 const recentPosts = [
   {
+    title: '科学抗衰老与抗氧化全景指南：基于顶级学术论文与医学研究的循证综述',
+    excerpt: '检索 Cell、Nature、Science、NEJM、CALERIE 等顶尖研究，系统解析衰老十二大标志、抗氧化悖论、生活方式干预、功能性食物与前沿药理学。',
+    link: '/blog/anti-aging-and-antioxidant-guide',
+    category: '前沿科学',
+    color: '#10b981',
+    tags: ['抗衰老', '抗氧化', '长寿医学', '营养学', '循证医学'],
+    date: '2026-10-13',
+    readTime: '25 min',
+  },
+  {
     title: '深入 Dart 事件循环：单线程如何撑起高并发',
     excerpt: '从 Event Loop、Microtask Queue、Event Queue 的优先级调度，到与 JavaScript 事件循环的本质差异，再到 UI 卡顿避坑，一篇讲透 Dart 异步底层运转。',
     link: '/blog/dart/event-loop',
