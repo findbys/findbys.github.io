@@ -27,6 +27,10 @@ export default defineConfig({
     ['meta', { property: 'og:description', content: '分享前端、Flutter、工程化等技术干货' }],
   ],
   themeConfig: {
+    outline: {
+      level: [2, 3],
+      label: '本页目录',
+    },
     nav: [
       { text: '首页', link: '/' },
       { text: '技能专区', link: '/skills/' },

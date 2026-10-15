@@ -133,6 +133,27 @@ function updateSparks() {
 function handlePointerMove(event: PointerEvent) {
   if (!enabled || event.pointerType !== 'mouse') return
 
+  if (
+    event.clientX < 0 ||
+    event.clientY < 0 ||
+    event.clientX > window.innerWidth ||
+    event.clientY > window.innerHeight
+  ) {
+    handlePointerLeave()
+    return
+  }
+
+  if (!isActive.value) {
+    currentX = event.clientX
+    currentY = event.clientY
+    targetX = event.clientX
+    targetY = event.clientY
+    lastX = event.clientX
+    lastY = event.clientY
+    isActive.value = true
+    return
+  }
+
   const dx = event.clientX - lastX
   const dy = event.clientY - lastY
   const speed = Math.hypot(dx, dy)
@@ -165,6 +186,30 @@ function handlePointerUp() {
 function handlePointerLeave() {
   isActive.value = false
   isPressing.value = false
+  sparks.value = []
+}
+
+function handleMouseEnter(event: MouseEvent) {
+  if (!enabled) return
+  currentX = event.clientX
+  currentY = event.clientY
+  targetX = event.clientX
+  targetY = event.clientY
+  lastX = event.clientX
+  lastY = event.clientY
+  isActive.value = true
+}
+
+function handleMouseOut(event: MouseEvent) {
+  if (!event.relatedTarget && !(event as any).toElement) {
+    handlePointerLeave()
+  }
+}
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    handlePointerLeave()
+  }
 }
 
 onMounted(() => {
@@ -175,7 +220,12 @@ onMounted(() => {
   window.addEventListener('pointermove', handlePointerMove)
   window.addEventListener('pointerdown', handlePointerDown)
   window.addEventListener('pointerup', handlePointerUp)
-  window.addEventListener('pointerleave', handlePointerLeave)
+  window.addEventListener('pointercancel', handlePointerLeave)
+  window.addEventListener('blur', handlePointerLeave)
+  document.addEventListener('mouseleave', handlePointerLeave)
+  document.addEventListener('mouseenter', handleMouseEnter)
+  document.addEventListener('mouseout', handleMouseOut)
+  document.addEventListener('visibilitychange', handleVisibilityChange)
   frameId = requestAnimationFrame(updateCursor)
 })
 
@@ -184,7 +234,12 @@ onBeforeUnmount(() => {
   window.removeEventListener('pointermove', handlePointerMove)
   window.removeEventListener('pointerdown', handlePointerDown)
   window.removeEventListener('pointerup', handlePointerUp)
-  window.removeEventListener('pointerleave', handlePointerLeave)
+  window.removeEventListener('pointercancel', handlePointerLeave)
+  window.removeEventListener('blur', handlePointerLeave)
+  document.removeEventListener('mouseleave', handlePointerLeave)
+  document.removeEventListener('mouseenter', handleMouseEnter)
+  document.removeEventListener('mouseout', handleMouseOut)
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
   cancelAnimationFrame(frameId)
 })
 </script>
