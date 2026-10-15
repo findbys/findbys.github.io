@@ -2,7 +2,7 @@
 title: 科学抗衰老与抗氧化全景指南：基于顶级学术论文与医学研究的循证综述
 description: 检索 Cell、Nature、Science、NEJM、CALERIE 等顶尖研究，系统解析衰老十二大标志、抗氧化悖论、生活方式干预、功能性食物与前沿药理学。
 date: 2026-10-13
-category: 前沿科学
+category: 前沿科学与健康
 color: '#10b981'
 readTime: 25 min
 tags: ['抗衰老', '抗氧化', '长寿医学', '营养学', '循证医学']

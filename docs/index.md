@@ -11,10 +11,20 @@ description: findbys 的个人技术博客，记录 Vue、Flutter、工程化与
 <script setup>
 const recentPosts = [
   {
+    title: '掉发、防脱与毛发再生：现代医学已经验证的事实与机理',
+    excerpt: '拆解雄脱生理学机制、DHT 与毛囊微型化。汇总 JAMA Dermatology 网状分析、非那雄胺/度他雄胺、米诺地尔、微针与红光治疗等临床验证方案，搭配高清中文医学图解。',
+    link: '/blog/health/hair-loss-prevention-and-regrowth-guide',
+    category: '前沿科学与健康',
+    color: '#06b6d4',
+    tags: ['脱发', '毛发再生', '雄脱', '非那雄胺', '米诺地尔', '循证医学'],
+    date: '2026-10-15',
+    readTime: '20 min',
+  },
+  {
     title: '科学抗衰老与抗氧化全景指南：基于顶级学术论文与医学研究的循证综述',
     excerpt: '检索 Cell、Nature、Science、NEJM、CALERIE 等顶尖研究，系统解析衰老十二大标志、抗氧化悖论、生活方式干预、功能性食物与前沿药理学。',
-    link: '/blog/anti-aging-and-antioxidant-guide',
-    category: '前沿科学',
+    link: '/blog/health/anti-aging-and-antioxidant-guide',
+    category: '前沿科学与健康',
     color: '#10b981',
     tags: ['抗衰老', '抗氧化', '长寿医学', '营养学', '循证医学'],
     date: '2026-10-13',

@@ -34,6 +34,7 @@ export default defineConfig({
         text: '技术博客',
         items: [
           { text: '所有文章', link: '/blog/' },
+          { text: '前沿科学与健康', link: '/blog/health/' },
           { text: 'Vue3 系列', link: '/blog/vue3/' },
           { text: 'Flutter 系列', link: '/blog/flutter/' },
           { text: '工程化', link: '/blog/engineering/' },
