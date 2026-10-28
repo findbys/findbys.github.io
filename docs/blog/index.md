@@ -6,6 +6,16 @@ description: 分享前端、Flutter、工程化等技术文章，记录学习与
 <script setup>
 const posts = [
   {
+    title: 'Flutter 渲染原理深度解析：从 setState 到屏幕像素点亮的全链路拆解',
+    excerpt: '从三棵树 canUpdate 复用机制切入，顺着 VSync 信号完整拆解 Build、Layout（RelayoutBoundary）、Paint（RepaintBoundary）与 Composite 源码调用链，对比 Skia 与 Impeller 引擎演进。',
+    link: '/blog/flutter/render-principle',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '渲染原理', 'PipelineOwner', 'Impeller', '性能优化'],
+    date: '2026-10-28',
+    readTime: '22 min',
+  },
+  {
     title: '掉发、防脱与毛发再生：现代医学已经验证的事实与机理',
     excerpt: '拆解雄脱生理学机制、DHT 与毛囊微型化。汇总 JAMA Dermatology 网状分析、非那雄胺/度他雄胺、米诺地尔、微针与红光治疗等临床验证方案，搭配高清中文医学图解。',
     link: '/blog/health/hair-loss-prevention-and-regrowth-guide',
@@ -204,16 +214,6 @@ const posts = [
     tags: ['Pinia', 'Vue3', '状态管理'],
     date: '2024-10-05',
     readTime: '11 min',
-  },
-  {
-    title: 'Flutter 渲染原理深度解析',
-    excerpt: '从 Widget → Element → RenderObject 三棵树，到 Skia 绘制流程，彻底理解 Flutter 渲染机制。',
-    link: '/blog/flutter/render-principle',
-    category: 'Flutter',
-    color: '#54c5f8',
-    tags: ['Flutter', '渲染原理', 'Dart'],
-    date: '2024-09-20',
-    readTime: '20 min',
   },
   {
     title: 'CSS Grid 布局完全指南',

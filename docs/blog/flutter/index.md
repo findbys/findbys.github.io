@@ -5,6 +5,7 @@ description: Flutter 相关文章合集。
 
 # Flutter 系列
 
+- [Flutter 渲染原理深度解析：从 setState 到屏幕像素点亮的全链路拆解](/blog/flutter/render-principle)
 - [深入浅出 Flutter 底层通信：从 BinaryMessenger 原理到双端实战与架构演进](/blog/flutter/flutter-native-communication)
 - [Flutter Riverpod Clean Architecture：一份可直接落地的生产级模板](/blog/flutter/flutter-riverpod-clean-arch)
 - [Flutter 3D 游戏开发实战：用 three_dart 从旋转立方体到完整小游戏](/blog/flutter/flutter-3d-game)
@@ -12,4 +13,3 @@ description: Flutter 相关文章合集。
 - [Flutter 工程化实战：大型项目目录结构划分与解耦指南](/blog/flutter/project-structure)
 - [Flutter 中协程原理：把 async/await 讲简单](/blog/flutter/coroutine-principle)
 - [Flutter BLoC 状态管理最佳实践](/blog/flutter/bloc-pattern)
-- [Flutter 渲染原理深度解析](/blog/flutter/render-principle)

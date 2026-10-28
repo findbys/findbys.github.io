@@ -11,6 +11,16 @@ description: findbys 的个人技术博客，记录 Vue、Flutter、工程化与
 <script setup>
 const recentPosts = [
   {
+    title: 'Flutter 渲染原理深度解析：从 setState 到屏幕像素点亮的全链路拆解',
+    excerpt: '从三棵树 canUpdate 复用机制切入，顺着 VSync 信号完整拆解 Build、Layout（RelayoutBoundary）、Paint（RepaintBoundary）与 Composite 源码调用链，对比 Skia 与 Impeller 引擎演进。',
+    link: '/blog/flutter/render-principle',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '渲染原理', 'PipelineOwner', 'Impeller', '性能优化'],
+    date: '2026-10-28',
+    readTime: '22 min',
+  },
+  {
     title: '掉发、防脱与毛发再生：现代医学已经验证的事实与机理',
     excerpt: '拆解雄脱生理学机制、DHT 与毛囊微型化。汇总 JAMA Dermatology 网状分析、非那雄胺/度他雄胺、米诺地尔、微针与红光治疗等临床验证方案，搭配高清中文医学图解。',
     link: '/blog/health/hair-loss-prevention-and-regrowth-guide',
@@ -31,6 +41,16 @@ const recentPosts = [
     readTime: '25 min',
   },
   {
+    title: '深入浅出 Flutter 底层通信：从 BinaryMessenger 原理到双端实战与架构演进',
+    excerpt: '从 BinaryMessenger 二进制消息传递机制与线程模型切入，手把手拆解 MethodChannel、EventChannel、BasicMessageChannel 双端实现，对比 Pigeon 与 Dart FFI 演进。',
+    link: '/blog/flutter/flutter-native-communication',
+    category: 'Flutter',
+    color: '#54c5f8',
+    tags: ['Flutter', '跨平台通信', 'Platform Channel', 'Android', 'iOS'],
+    date: '2026-09-01',
+    readTime: '20 min',
+  },
+  {
     title: '深入 Dart 事件循环：单线程如何撑起高并发',
     excerpt: '从 Event Loop、Microtask Queue、Event Queue 的优先级调度，到与 JavaScript 事件循环的本质差异，再到 UI 卡顿避坑，一篇讲透 Dart 异步底层运转。',
     link: '/blog/dart/event-loop',
@@ -49,26 +69,6 @@ const recentPosts = [
     tags: ['Flutter', 'Riverpod', 'Clean Architecture', '状态管理'],
     date: '2026-08-25',
     readTime: '18 min',
-  },
-  {
-    title: 'Flutter 3D 游戏开发实战：用 three_dart 从旋转立方体到完整小游戏',
-    excerpt: '不依赖 Unity，仅用 Flutter + three_dart 构建可运行的 3D 小游戏。场景搭建、渲染循环、输入交互、碰撞计分，配真实渲染截图。',
-    link: '/blog/flutter/flutter-3d-game',
-    category: 'Flutter',
-    color: '#54c5f8',
-    tags: ['Flutter', 'three_dart', '3D 游戏', 'flutter_gl', '游戏开发'],
-    date: '2026-08-24',
-    readTime: '22 min',
-  },
-  {
-    title: '用 Git Worktree 解决"一个仓库多 workspace"开发难题',
-    excerpt: '用 Git Worktree 让一个仓库同时拥有多个独立工作区，分享常用命令、工作流和踩过的坑。',
-    link: '/blog/git/git-worktree',
-    category: 'Git',
-    color: '#f05032',
-    tags: ['Git', 'Worktree', '分支管理', '多工作区', '开发效率'],
-    date: '2026-08-09',
-    readTime: '16 min',
   },
 ]
 </script>
