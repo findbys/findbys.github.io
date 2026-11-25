@@ -11,6 +11,16 @@ description: findbys 的个人技术博客，记录 Vue、Flutter、工程化与
 <script setup>
 const recentPosts = [
   {
+    title: '想学大模型训练和微调？GitHub 上这 5 个高星项目够你啃很久了',
+    excerpt: '整理了 GitHub 上 5 个高 Star、经得起检验的大模型开源项目，按“从零手写预训练”和“基座模型微调”两条路线拆解，帮你少走弯路。',
+    link: '/blog/ai/llm-training-and-finetuning-github-guide',
+    category: 'AI 与大模型',
+    color: '#8b5cf6',
+    tags: ['大模型', 'LLM', '微调', 'PyTorch', 'GitHub', '开源项目'],
+    date: '2026-11-24',
+    readTime: '10 min',
+  },
+  {
     title: 'Flutter 渲染原理深度解析：从 setState 到屏幕像素点亮的全链路拆解',
     excerpt: '从三棵树 canUpdate 复用机制切入，顺着 VSync 信号完整拆解 Build、Layout（RelayoutBoundary）、Paint（RepaintBoundary）与 Composite 源码调用链，对比 Skia 与 Impeller 引擎演进。',
     link: '/blog/flutter/render-principle',
